@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Reflection.PortableExecutable;
+using System.Xml;
 
 namespace Task3
 {
@@ -24,7 +25,7 @@ namespace Task3
         }
         static void Main(string[] args)
         {
-            var contacts = new Dictionary<string, string>
+            /*var contacts = new Dictionary<string, string>
             {
                 { "0959353169", "me" },
                 { "0666772189", "Karl" },
@@ -32,7 +33,20 @@ namespace Task3
                 { "0506767186", "Pork" },
                 { "0975432734", "Clark" }
             };
-            WriteTelephoneBookToXml (contacts);
+            WriteTelephoneBookToXml (contacts);*/
+
+            var xmlReader = new XmlTextReader("../../../TelephoneBook.xml");
+            while (xmlReader.Read())
+            {
+                if(xmlReader.NodeType == XmlNodeType.Element)
+                {
+                    if (xmlReader.HasAttributes)
+                    {
+                        xmlReader.MoveToAttribute("TelephoneNumber");
+                        Console.WriteLine(xmlReader.Value); 
+                    }
+                }
+            }
         }
     }
 }

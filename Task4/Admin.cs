@@ -15,16 +15,18 @@ namespace Task4
     }
     internal class Admin
     {
+        private string _password;
         public FontConfiguration fontConfig { get;}
 
 
-        public Admin()
+        public Admin(string password)
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("userAppearance.json")
                 .Build();
             fontConfig = new FontConfiguration();
             config.Bind(fontConfig);
+            _password = password;
         }
         public void ChangeColorOfFont()
         {
@@ -63,6 +65,11 @@ namespace Task4
                 Console.WriteLine("Press eny key to continue...");
                 Console.ReadKey();
             }
+        }
+
+        public bool CheckPassword(string password)
+        {
+            return password == _password;
         }
     }
 }

@@ -11,11 +11,23 @@ namespace Task4
         public static event ChangeColor OnFontColorChanged;
         public static event ChangeColor OnBackgroundColorChanged;
 
-        static Admin admin = new Admin();
+        static Admin admin = new Admin("qwerty");
         static void Main(string[] args)
         {
-            OnFontColorChanged += new ChangeColor(admin.ChangeColorOfFont);
-            OnBackgroundColorChanged += new ChangeColor(admin.ChangeColorOfBackgroud);
+            Console.WriteLine("enter password:");
+            string password = Console.ReadLine();
+            if(admin.CheckPassword(password))
+            {
+                Console.WriteLine("Sign in succesfull");
+                OnFontColorChanged += new ChangeColor(admin.ChangeColorOfFont);
+                OnBackgroundColorChanged += new ChangeColor(admin.ChangeColorOfBackgroud);
+            }
+            else
+            {
+                Console.WriteLine("password is wrong");
+                OnFontColorChanged += () => Console.WriteLine("you are not admin, you can change anything");
+                OnBackgroundColorChanged += () => Console.WriteLine("you are not admin, you can change anything");
+            }
 
             while (true)
             {

@@ -8,9 +8,15 @@ using System.Threading.Tasks;
 
 namespace Task4
 {
+    internal class FontConfiguration
+    {
+        public string FontColor { get; set; }
+        public string BackgroundColor { get; set; }
+    }
     internal class Admin
     {
-        public FontConfiguration fontConfig { get; }
+        public FontConfiguration fontConfig { get;}
+
 
         public Admin()
         {
@@ -18,22 +24,45 @@ namespace Task4
                 .AddJsonFile("userAppearance.json")
                 .Build();
             fontConfig = new FontConfiguration();
-            config.GetSection("Appearance").Bind(fontConfig);
-
+            config.Bind(fontConfig);
         }
         public void ChangeColorOfFont()
         {
             Console.WriteLine("Enter color you want to apply:");
-            string colour = Console.ReadLine();
-            fontConfig.FontColor = colour;
-            string updatedJson = JsonSerializer.Serialize(fontConfig);
+            string color = Console.ReadLine();
+            object? validColor;
+            if (Enum.TryParse(typeof(ConsoleColor), color, out validColor) )
+            {
+                fontConfig.FontColor = validColor.ToString();
+                string updatedJson = JsonSerializer.Serialize(fontConfig);
+                File.WriteAllText("userAppearance.json", updatedJson);
+            }
+            else
+            {
+                Console.WriteLine("Format of Color was invalid try again (the color must begin " +
+                    "with a capital letter and be one of the meanings of the Enum ConsoleColor)");
+                 Console.WriteLine("Press eny key to continue...");
+                 Console.ReadKey();
+            }
         }
         public void ChangeColorOfBackgroud()
         {
             Console.WriteLine("Enter color you want to apply:");
-            string colour = Console.ReadLine();
-            fontConfig.BackgroundColor = colour;
-            string updatedJson = JsonSerializer.Serialize(fontConfig);
+            string color = Console.ReadLine();
+            object? validColor;
+            if (Enum.TryParse(typeof(ConsoleColor), color, out validColor))
+            {
+                fontConfig.BackgroundColor = validColor.ToString();
+                string updatedJson = JsonSerializer.Serialize(fontConfig);
+                File.WriteAllText("userAppearance.json", updatedJson);
+            }
+            else
+            {
+                Console.WriteLine("Format of Color was invalid try again (the color must begin " +
+                    "with a capital letter and be one of the meanings of the Enum ConsoleColor)");
+                Console.WriteLine("Press eny key to continue...");
+                Console.ReadKey();
+            }
         }
     }
 }
